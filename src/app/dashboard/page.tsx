@@ -17,6 +17,12 @@ import {
   seasonalNaiveForecast,
 } from "@/lib/forecast"
 
+type MapStat = {
+  date: string;
+  peak_players: number;
+  avg_players: number;
+};
+
 export default function DashboardPage() {
   // Profile state
   const [displayName, setDisplayName] = useState("")
@@ -28,7 +34,7 @@ export default function DashboardPage() {
 
   // Fortnite map stats state
   const [mapCode, setMapCode] = useState("")
-  const [mapStats, setMapStats] = useState<any[]>([])
+  const [mapStats, setMapStats] = useState<MapStat[]>([])
   const [statsLoading, setStatsLoading] = useState(false)
   const [statsError, setStatsError] = useState("")
   const [forecasts, setForecasts] = useState<{
@@ -70,7 +76,7 @@ export default function DashboardPage() {
     fetchProfile()
   }, [])
 
-  async function handleSave(e: React.FormEvent) {
+  async function handleSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSaving(true)
     setError("")
@@ -99,7 +105,7 @@ export default function DashboardPage() {
     setSaving(false)
   }
 
-  async function handleFetchStats(e: React.FormEvent) {
+  async function handleFetchStats(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setStatsLoading(true)
     setStatsError("")
@@ -115,14 +121,14 @@ export default function DashboardPage() {
       } else {
         setMapStats(json.data)
         // Extract peak_players for forecasting
-        const history = json.data.map((row: any) => row.peak_players)
+        const history = json.data.map((row: MapStat) => row.peak_players)
         setForecasts({
           linear: linearRegressionForecast(history, 30),
           moving: movingAverageForecast(history, 30),
           seasonal: seasonalNaiveForecast(history, 30),
         })
       }
-    } catch (e) {
+    } catch {
       setStatsError("Failed to fetch map stats")
     }
     setStatsLoading(false)
@@ -251,8 +257,8 @@ export default function DashboardPage() {
                   <span className="font-semibold">Forecast (next 30 days):</span>
                   <ul className="list-disc ml-6 mt-2 text-xs text-zinc-400 space-y-1">
                     <li><b>Linear Regression:</b> Captures the overall trend in player counts. If the map is gaining or losing popularity, this method will show a rising or falling forecast based on the best-fit line through the historical data.</li>
-                    <li><b>Moving Average:</b> Smooths out short-term fluctuations by averaging the last 7 days. This produces a flat forecast, representing a "typical" value, but ignores trends and seasonality.</li>
-                    <li><b>Seasonal Naive:</b> Repeats the last week's pattern for the next 30 days, capturing weekly cycles (e.g., weekends). Useful for maps with strong weekly seasonality.</li>
+                    <li><b>Moving Average:</b> Smooths out short-term fluctuations by averaging the last 7 days. This produces a flat forecast, representing a &quot;typical&quot; value, but ignores trends and seasonality.</li>
+                    <li><b>Seasonal Naive:</b> Repeats the last week&apos;s pattern for the next 30 days, capturing weekly cycles (e.g., weekends). Useful for maps with strong weekly seasonality.</li>
                   </ul>
                   <div className="mt-1 text-xs text-zinc-500">Data is synthetic/mock for demonstration only.</div>
                 </div>

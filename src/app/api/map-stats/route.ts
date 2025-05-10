@@ -13,7 +13,6 @@ async function getNumericId(mapCode: string): Promise<string> {
 
 // Helper to fetch and aggregate Fortnite.gg data using numeric ID
 async function fetchFortniteMapStatsById(numericId: string) {
-  // Fetch 1 month of 10-min interval data
   const url = `https://fortnite.gg/player-count-graph?range=1m&id=${numericId}`
   const res = await fetch(url)
   if (!res.ok) throw new Error('Failed to fetch from Fortnite.gg')

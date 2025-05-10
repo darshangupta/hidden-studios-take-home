@@ -240,7 +240,7 @@ export default function DashboardPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mapStats.map((row, i) => (
+                    {mapStats.slice().reverse().map((row, i) => (
                       <TableRow key={i}>
                         <TableCell>{row.date}</TableCell>
                         <TableCell>{row.peak_players}</TableCell>

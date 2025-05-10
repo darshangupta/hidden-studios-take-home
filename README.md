@@ -1,7 +1,43 @@
-Run with npm run dev
+# Fortnite Map Insights Dashboard
+
+## Running the App
+
+Run with:
+
+```
+npm run dev
+```
+
+## Test User
+
+Test user to login: `test@hiddenstudios.com` & `GBu_V2S9D.aY6pc`
+
+## Data Collection Approach (Updated)
+
+This app now fetches **real player count data** for Fortnite Creative maps using a two-step process:
+
+1. **Numeric Map ID Extraction:**
+   - Given a public map code (e.g., `6155-1398-4059`), the app scrapes the numeric map ID from the Fortnite.gg island page (e.g., `data-id="218"`).
+2. **Player Count Data Fetching:**
+   - Using the numeric ID, the app queries the hidden Fortnite.gg API endpoint (`player-count-graph`) to retrieve raw player count data at the most granular interval available (10 minutes, 1 hour, etc.).
+   - The app then aggregates this interval data into **daily peak and average player counts** for each day in the past month.
+
+## API Usage
+
+To fetch daily stats for a map, use:
+
+```
+GET /api/map-stats?map_code=YOUR_MAP_CODE
+```
+
+- Example: `/api/map-stats?map_code=6155-1398-4059`
+- The response is an array of objects: `{ date, peak_players, avg_players }` for each day.
+
+## Notes
+- No data is mocked; all stats are fetched live from Fortnite.gg.
+- The app does not use Supabase for map stats anymore—everything is pulled and processed on demand.
+- If the numeric ID cannot be found or the map is not tracked by Fortnite.gg, the API will return an error.
 
 
-Test user to login: test@hiddenstudios.com & GBu_V2S9D.aY6pc
 
-Tried requests library, then playwright, and playwright stealth to pull fortnite data, none worked. No other APIs (that I found) were sufficient. Decided to mock data from a few maps instead. Here are the IDs: 
 

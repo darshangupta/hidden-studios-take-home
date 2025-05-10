@@ -33,6 +33,24 @@ GET /api/map-stats?map_code=YOUR_MAP_CODE
 - Example: `/api/map-stats?map_code=6155-1398-4059`
 - The response is an array of objects: `{ date, peak_players, avg_players }` for each day.
 
+## Statistical Methods
+
+The dashboard provides forecasts for future player counts using the following statistical methods:
+
+- **Linear Regression:** Captures the overall trend in player counts by fitting a best-fit line to the historical data and projecting it forward.
+- **Moving Average:** Smooths out short-term fluctuations by averaging the last 7 days, providing a stable forecast that ignores trends and seasonality.
+- **Seasonal Naive:** Repeats the last week's pattern for the next 30 days, capturing weekly cycles and seasonality in player activity.
+
+These methods are implemented in `src/lib/forecast.ts` and are used to generate the forecast tables and charts in the dashboard.
+
+## Source of Fortnite.gg Data
+
+The logic for scraping the numeric map ID and fetching/aggregating player count data from the hidden Fortnite.gg API is implemented in:
+
+- `src/app/api/map-stats/route.ts`
+
+This file handles the entire process: extracting the numeric ID, fetching the raw interval data, and aggregating it into daily stats for use in the dashboard.
+
 ## Notes
 - No data is mocked; all stats are fetched live from Fortnite.gg.
 - The app does not use Supabase for map stats anymore—everything is pulled and processed on demand.

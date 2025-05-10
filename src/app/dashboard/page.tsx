@@ -201,7 +201,7 @@ export default function DashboardPage() {
         <Card className="bg-zinc-900 border-zinc-800 text-white">
           <CardHeader>
             <CardTitle className="text-white">Fortnite Map Insights</CardTitle>
-            <CardDescription className="text-zinc-300">Enter a map code to see stats and forecast. Data is synthetic/mock.</CardDescription>
+            <CardDescription className="text-zinc-300">Enter a map code to see stats and forecast.</CardDescription>
           </CardHeader>
           <CardContent>
             <form className="space-y-4 mb-6" onSubmit={handleFetchStats}>
